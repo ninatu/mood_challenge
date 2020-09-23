@@ -1,0 +1,1 @@
+python /workspace/predict_3d.py -i $1 -o $2 -c /workspace/configs/abdom_sample.yaml -m 'sample'

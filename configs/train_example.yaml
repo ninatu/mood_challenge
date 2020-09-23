@@ -1,0 +1,85 @@
+#=========================== CONFIG FOR TRAINING ===========================
+model_type: dpa
+
+verbose: True
+random_seed: 4343
+finetune_from:
+
+checkpoint_root: # PUT PATH TO SAVE CHECKPOINTS
+log_root: # PUT PATH TO SAVE LOGS
+
+#--------------------- Hyperparameters of training  ------------------------------
+
+max_image_res: 64
+initial_image_res: 64
+image_dim: 1
+
+latent_res: 1
+latent_dim: 64
+
+trns_iter: 0
+stab_iter: 300000
+iters_per_res: {}
+val_iter: 10000
+log_iter: 10
+image_sample_iter: 1000
+early_stopping_patience: 3
+early_stopping_min_delta: 0.002
+
+#--------------------- Hyperparameters of optimizers ---------------------------
+
+adam_kwargs:
+  lr: 0.0005
+
+num_workers: 16
+batch_sizes:
+  64: 64
+
+#--------------------- Hyperparameters of dataset  ------------------------------
+
+train_dataset:
+  dataset_type: numpy2d
+  dataset_kwargs:
+    image_root: # PUT IMAGE_ROOT TO 2D SLICES HERE
+    folds_path: # PUT PATH TO FOLDS HERE
+    fold: 0
+    split: train
+  transform_kwargs:
+    resize: 64
+
+val_dataset:
+  dataset_type: numpy2d
+  dataset_kwargs:
+    image_root: # PUT IMAGE_ROOT TO 2D SLICES HERE
+    folds_path: # PUT PATH TO FOLDS HERE
+    fold: 0
+    split: val
+  transform_kwargs:
+    resize: 64
+#--------------------- Hyperparameters of models  ------------------------------
+
+enc:
+  type: residual9
+  kwargs:
+    inner_dims: [64, 64, 64, 64, 64]
+
+dec:
+  type: residual9
+  kwargs:
+    inner_dims: [64, 64, 64, 64, 64]
+
+
+#--------------------- Hyperparameters of loss function ---------------------------
+
+image_rec_loss:
+  loss_type: relative_perceptual_L1
+  loss_kwargs:
+    path_to_vgg19_weights: # PUT PATH TO TRAINED VGG19 WEIGHTS HERE
+    normalize_to_vgg_input: False
+    weights_per_resolution:
+      64:
+        img_weight: 0
+        feature_weights:
+          r42: 1
+    use_smooth_pg: False
+

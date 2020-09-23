@@ -1,0 +1,42 @@
+##=========================== CONFIG FOR INFERENCE ===========================
+
+model_type: dpa
+
+verbose: True
+save_inference: False
+
+
+apply_along_axis: 0
+score_reduction: max
+do_not_process_small_area: True
+delete_zero_area: False
+resize_3d_for_evaluation: 128
+
+
+test_dataset:
+  dataset_type: nifti3d
+  dataset_kwargs:
+    image_root: # PUT IMAGE_ROOT TO GENERATED 3D VOLUMES WITH ANOMALIES HERE
+    mask_root: # PUT ROOT TO GENERATED MASKS OF 3D VOLUMES WITH ANOMALIES HERE
+    folds_path: # PUT PATH TO FOLDS HERE
+    fold: 0
+    split: val
+  transform_kwargs:
+    resize: 64
+
+test_image_rec_loss:
+  loss_type: relative_perceptual_L1
+  loss_kwargs:
+    mode_3d: True
+    path_to_vgg19_weights: # PUT PATH TO TRAINED VGG19 WEIGHTS HERE
+    normalize_to_vgg_input: False
+      64:
+        img_weight: 0
+        feature_weights:
+          r42: 1
+    use_smooth_pg: False
+
+
+
+results_root: # PUT PATH TO SAVE MODEL INFERENCE AND RESULTS
+test_model_path: # PUT {checkpoint_root}/anomaly_detection.tar

@@ -1,0 +1,77 @@
+adam_kwargs:
+  lr: 0.0002
+batch_sizes:
+  128: 64
+checkpoint_root: # PUT PATH TO SAVE CHECKPOINTS
+dec:
+  kwargs:
+    inner_dims:
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+  type: residual9
+early_stopping_min_delta: 0.002
+early_stopping_patience: 3
+enc:
+  kwargs:
+    inner_dims:
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+    - 64
+  type: residual9
+finetune_from: null
+image_dim: 1
+image_rec_loss:
+  loss_kwargs:
+    normalize_to_vgg_input: false
+    path_to_vgg19_weights: # PUT PATH TO VGG19 weights
+    use_smooth_pg: false
+    weights_per_resolution:
+      128:
+        feature_weights:
+          r32: 1
+        img_weight: 0
+  loss_type: relative_perceptual_L1
+image_sample_iter: 1000
+initial_image_res: 128
+iters_per_res: {}
+latent_dim: 64
+latent_res: 1
+log_iter: 10
+log_root: # PUT PATH TO SAVE LOGS
+max_image_res: 128
+model_type: dpa
+num_workers: 16
+random_seed: 1065
+stab_iter: 300000
+train_dataset:
+  dataset_kwargs:
+    cache: false
+    fold: 0
+    folds_path: # PUT PATH TO FOLDS HERE
+    image_root: # PUT IMAGE_ROOT TO 2D SLICES HERE
+    split: train
+  dataset_type: numpy2d
+  transform_kwargs:
+    resize: 128
+trns_iter: 0
+val_dataset:
+  dataset_kwargs:
+    cache: false
+    fold: 0
+    folds_path: # PUT PATH TO FOLDS HERE
+    image_root: # PUT IMAGE_ROOT TO 2D SLICES HERE
+    split: val
+  dataset_type: numpy2d
+  transform_kwargs:
+    resize: 128
+val_iter: 10000
+verbose: true

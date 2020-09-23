@@ -1,0 +1,18 @@
+do_not_process_small_area: True
+delete_zero_area: False
+resize: 128
+
+path_to_vgg19_weights: /workspace/data/vgg_weights/simclr_exp_1.tar
+
+models:
+  - checkpoint_path: /workspace/data/brain/axis_0/res_128_lr_1_ld_128_pf_r42.tar
+    along_axis: 0
+    resize: 128
+
+  - checkpoint_path: /workspace/data/brain/axis_1/res_128_lr_1_ld_64_pf_r32.tar
+    along_axis: 1
+    resize: 128
+
+  - checkpoint_path: /workspace/data/brain/axis_2/res_128_lr_1_ld_128_pf_r42.tar
+    along_axis: 2
+    resize: 128
