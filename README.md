@@ -1,4 +1,4 @@
-# Medical Out-of-Distribution Analysis Challenge. Solution
+# Medical Out-of-Distribution Analysis Challenge. Solution. Third Place in Pixel-Level Task
 
 
 [![License][license-shield]][license-url]
@@ -16,11 +16,23 @@ and pixel-level out-of-distribution detection) on two medical datasets
 
 ## Solution 
 
+Presentation of the solution (starts at 18:04 minutes): [https://www.youtube.com/watch?v=yOemj1TQfZU](https://www.youtube.com/watch?v=yOemj1TQfZU)
+
 We based our solution on [Deep Perceptual Autoencoder.](https://arxiv.org/pdf/2006.13265.pdf) 
 We applied a Deep Perceptual Autoencoder on 2D slices of 3D volumes. 
 To calculate [Perceptual Loss](https://arxiv.org/abs/1603.08155), we used VGG19 network
 as feature extractor pre-trained
 using an unsupervised learning framework [SimCLR](https://arxiv.org/abs/2002.05709).
+
+Our training procedure consist of two stages: 
+1. SimCLR training of VGG19 features on joined set of all sliced of 3D volume along 0'th, 1'st, 2'nd axes. 
+2. Training three Deep Perceptual Autoencoders -- each on the set of 2D slices of 3D volume along for the corresponded axes.
+
+We used Deep Perceptual Autoencoders to predict anomalies pixel-wise (giving an abnormality score for each voxel of 3D volume), 
+and sample-wise (for a whole 3D volume):
+1. Pixel-wise abnormality scores. The final pixel-wise prediction was the average of pixel-wise predictions over three models (applied along different axes). To obtain pixel-level prediction, we change the computation of the L1-norm over a whole feature map to the pixel-wise L1-norm in the numerator of Equation~\ref{eq:loss}. After obtaining such a map of reconstruction errors, we resized this map to an input image shape. 
+2. Sample-wise abnormality score. As an abnormality score of a whole 3D volume, we used a maximum of volume-level abnormality scores.  
+
 
 ## Structure of Project 
     anomaly_detection - Python Package. Implementation of Deep Perceptual Autoencoder (https://arxiv.org/pdf/2006.13265.pdf).
