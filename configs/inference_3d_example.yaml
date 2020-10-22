@@ -16,9 +16,9 @@ resize_3d_for_evaluation: 128
 test_dataset:
   dataset_type: nifti3d
   dataset_kwargs:
-    image_root: # PUT IMAGE_ROOT TO GENERATED 3D VOLUMES WITH ANOMALIES HERE
-    mask_root: # PUT ROOT TO GENERATED MASKS OF 3D VOLUMES WITH ANOMALIES HERE
-    folds_path: # PUT PATH TO FOLDS HERE
+    image_root: ./data/preprocessed/brain_train/3d_test
+    mask_root: data/preprocessed/brain_train/3d_test_masks
+    folds_path: ./folds/brain/train_folds_10.csv
     fold: 0
     split: val
   transform_kwargs:
@@ -28,7 +28,7 @@ test_image_rec_loss:
   loss_type: relative_perceptual_L1
   loss_kwargs:
     mode_3d: True
-    path_to_vgg19_weights: # PUT PATH TO TRAINED VGG19 WEIGHTS HERE
+    path_to_vgg19_weights: ./output/vgg_weights/simclr_exp_1.tar
     normalize_to_vgg_input: False
       64:
         img_weight: 0
@@ -38,5 +38,5 @@ test_image_rec_loss:
 
 
 
-results_root: # PUT PATH TO SAVE MODEL INFERENCE AND RESULTS
-test_model_path: # PUT {checkpoint_root}/anomaly_detection.tar
+results_root: ./output/results/example
+test_model_path: ./output/checkpoint/example/anomaly_detection.tar

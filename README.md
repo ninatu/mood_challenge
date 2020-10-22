@@ -35,7 +35,7 @@ and sample-wise (for a whole 3D volume):
 
 
 ## Structure of Project 
-    anomaly_detection - Python Package. Implementation of Deep Perceptual Autoencoder (https://arxiv.org/pdf/2006.13265.pdf).
+    mood - Python Package. Implementation of Deep Perceptual Autoencoder (https://arxiv.org/pdf/2006.13265.pdf).
                         Installation: 
                             pip install -r requirements.txt
                             pip install -e . --user
@@ -75,28 +75,32 @@ pip install -e . --user
 1. Download data (see [Challenge Website](http://medicalood.dkfz.de/web/)) to `./data/original`.
 2. Save 2D slices along all axes
     ```bash
-    python anomaly_detection/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_0 -a 0
-    python anomaly_detection/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_1 -a 1
-    python anomaly_detection/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_2 -a 2
+    python mood/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_0 -a 0
+    python mood/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_1 -a 1
+    python mood/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_2 -a 2
    ...
    ```
 3. Optionally, create folds for cross-validation or **use ours folds** (`folds` dir)
     ```bash
-    python anomaly_detection/utils/preprocessing/create_folds.py -i ./data/original/brain_train/ -o ./folds/brain/train_folds_10.csv -n 10
-    python anomaly_detection/utils/preprocessing/create_folds.py -i ./data/original/abdom_train/ -o ./folds/abdom/train_folds_10.csv -n 10
+    python mood/utils/preprocessing/create_folds.py -i ./data/original/brain_train/ -o ./folds/brain/train_folds_10.csv -n 10
+    python mood/utils/preprocessing/create_folds.py -i ./data/original/abdom_train/ -o ./folds/abdom/train_folds_10.csv -n 10
    ```
 4. Optionally: create a synthetic dataset for validation
     ```bash
-    python anomaly_detection/utils/data/create_val_dataset_with_synthetic_anomalies.py [-h] -i INPUT_DIR -o OUTPUT_IMAGE_DIR -m OUTPUT_MASK_DIR [-p FOLDS_PATH] [-f FOLD]
-
-    optional arguments:
-      -h, --help            show this help message and exit
-      -i INPUT_DIR, --input_dir INPUT_DIR
-      -o OUTPUT_IMAGE_DIR, --output_image_dir OUTPUT_IMAGE_DIR
-      -m OUTPUT_MASK_DIR, --output_mask_dir OUTPUT_MASK_DIR
-      -p FOLDS_PATH, --folds_path FOLDS_PATH
-                            Path to csv file with folds info. Use if you want to create a synthetic dataset only from one "test" fold of input dataset
-      -f FOLD, --fold FOLD  # of fold. Use if you want to create a synthetic dataset only from one "test" fold of input dataset
+    python mood/utils/data/create_val_dataset_with_synthetic_anomalies.py \
+            -i ./data/original/brain_train/ \
+            -o ./data/preprocessed/brain_train/3d_test \
+            -m ./data/preprocessed/brain_train/3d_test_masks/ \
+            --folds_path ./folds/brain/train_folds_10.csv
+            --fold 0
+   
+   python mood/utils/data/create_val_dataset_with_synthetic_anomalies.py \
+            -i ./data/original/abdom_train/ \
+            -o ./data/preprocessed/abdom_train/3d_test \
+            -m ./data/preprocessed/abdom_train/3d_test_masks/ \
+            --folds_path ./folds/abdom/train_folds_10.csv
+            --fold 0
+   
    ```
 
 ## Training
@@ -109,21 +113,43 @@ to pre-train VGG19 features (used in the perceptual loss)
 
 See [our fork](https://github.com/ninatu/SimCLR) of implementation 
 of SimCLR adapted for the VGG19 training on provided data.
+
+Save the pre-trained weights in `./output/vgg_weights/simclr_exp_1.tar`.
     
 
 ### Training Deep Perceptual Autoencoder
 
+#### Example
 See examples of configs for training and inference in `configs` dir.
 
 To train Deep Perceptual Autoencoder (DPA), run:
 ```bash
-python anomaly_detection/main.py train {path_to_config}
+python mood/main.py train ./configs/train_example.yaml
 ```
 
 To inference and evaluate your model on synthetic dataset, run
 ```bash
-python anomaly_detection/main.py inference_evaluate_3d {path_to_config}
+python mood/main.py inference_evaluate_3d ./configs/inference_3d_example.yaml
 ```
+
+#### Final Model
+
+To train models as in our final submission, use the configs in `configs/brain/pixel`, `configs/brain/sample`,
+`configs/abdom/pixel`, `configs/abdom/sample`
+
+```bash
+python mood/main.py train configs/brain/pixel/axis_0/train_config.yaml
+python mood/main.py train configs/brain/pixel/axis_1/train_config.yaml
+python mood/main.py train configs/brain/pixel/axis_2/train_config.yaml
+
+python mood/main.py train configs/brain/sample/axis_0/train_config.yaml
+python mood/main.py train configs/brain/sample/axis_1/train_config.yaml
+python mood/main.py train configs/brain/sample/axis_2/train_config.yaml
+
+...
+```
+
+
 
 ## Building Docker With Final Model
 
@@ -132,7 +158,7 @@ in brain MRI task (applied along different axes), and over two models in abdomin
 (applied along 0'th and 2'th axes).
 
 In order to build a docker with the final model:
-1. Put your trained model in folder `submission_data`
+1. Put your trained model into folder `submission_data`
 2. Run 
 ```bash
 docker build . -t mood:latest

@@ -29,7 +29,7 @@ RUN pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.
 
 # copy files
 
-RUN mkdir /workspace/anomaly_detection && \
+RUN mkdir /workspace/mood && \
     mkdir /workspace/configs && \
     mkdir /workspace/data
 
@@ -37,9 +37,9 @@ COPY submission_data/data /workspace/data
 COPY submission_data/configs /workspace/configs
 ADD submission_data/scripts /workspace/
 
-COPY anomaly_detection /workspace/anomaly_detection/anomaly_detection
-ADD setup.py /workspace/anomaly_detection
-RUN pip install /workspace/anomaly_detection
+COPY mood /workspace/mood/mood
+ADD setup.py /workspace/mood
+RUN pip install /workspace/mood
 
 RUN chmod +x /workspace/*.sh && \
     mkdir /mnt/data && \

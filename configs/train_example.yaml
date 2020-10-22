@@ -5,8 +5,8 @@ verbose: True
 random_seed: 4343
 finetune_from:
 
-checkpoint_root: # PUT PATH TO SAVE CHECKPOINTS
-log_root: # PUT PATH TO SAVE LOGS
+checkpoint_root: ./output/checkpoint/example
+log_root: ./output/logs/example
 
 #--------------------- Hyperparameters of training  ------------------------------
 
@@ -40,8 +40,8 @@ batch_sizes:
 train_dataset:
   dataset_type: numpy2d
   dataset_kwargs:
-    image_root: # PUT IMAGE_ROOT TO 2D SLICES HERE
-    folds_path: # PUT PATH TO FOLDS HERE
+    image_root: ./data/preprocessed/brain_train/2d_axis_2
+    folds_path: ./folds/brain/train_folds_10.csv
     fold: 0
     split: train
   transform_kwargs:
@@ -50,8 +50,8 @@ train_dataset:
 val_dataset:
   dataset_type: numpy2d
   dataset_kwargs:
-    image_root: # PUT IMAGE_ROOT TO 2D SLICES HERE
-    folds_path: # PUT PATH TO FOLDS HERE
+    image_root: ./data/preprocessed/brain_train/2d_axis_2
+    folds_path: ./folds/brain/train_folds_10.csv
     fold: 0
     split: val
   transform_kwargs:
@@ -74,7 +74,7 @@ dec:
 image_rec_loss:
   loss_type: relative_perceptual_L1
   loss_kwargs:
-    path_to_vgg19_weights: # PUT PATH TO TRAINED VGG19 WEIGHTS HERE
+    path_to_vgg19_weights: ./output/vgg_weights/simclr_exp_1.tar
     normalize_to_vgg_input: False
     weights_per_resolution:
       64:

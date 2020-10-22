@@ -9,10 +9,10 @@ import argparse
 import tqdm
 import monai
 
-from anomaly_detection.dpa.train import DeepPerceptualAutoencoder
-from anomaly_detection.dpa.rec_losses import ReconstructionLossType
-from anomaly_detection.dpa.pg_rec_losses import PG_RECONSTRUCTION_LOSSES
-from anomaly_detection.utils.utils import load_yaml
+from mood.dpa.train import DeepPerceptualAutoencoder
+from mood.dpa.rec_losses import ReconstructionLossType
+from mood.dpa.pg_rec_losses import PG_RECONSTRUCTION_LOSSES
+from mood.utils.utils import load_yaml
 
 
 def predict(input_folder, target_folder, config_path, mode):
