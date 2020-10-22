@@ -22,10 +22,17 @@ def create_folds(input_folder: str, output_path: str, n_folds: int):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input_dir", required=True, type=str)
-    parser.add_argument("-o", "--output_path", required=True, type=str)
-    parser.add_argument("-n", "--n_folds", required=False, type=int, default=3)
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-i", "--input_dir",
+                        default='./data/original/brain_train/',
+                        help='input_dir')
+    parser.add_argument("-o", "--output_path",
+                        default='./folds/brain/train_folds_10.csv',
+                        help='output_path')
+    parser.add_argument("-n", "--n_folds",
+                        type=int,
+                        default=10,
+                        help='n_folds')
 
     args = parser.parse_args()
 

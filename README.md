@@ -72,29 +72,18 @@ pip install -e . --user
      
 ## Data Preparation
 
-1. Download data (see [Challenge Website](http://medicalood.dkfz.de/web/))
+1. Download data (see [Challenge Website](http://medicalood.dkfz.de/web/)) to `./data/original`.
 2. Save 2D slices along all axes
     ```bash
-    python anomaly_detection/utils/data/save_2D.py [-h] -i INPUT_DIR -o OUTPUT_DIR -a AXIS [-f] [-r RESIZE]
-    
-    optional arguments:
-      -h, --help            show this help message and exit
-      -i INPUT_DIR, --input_dir INPUT_DIR
-      -o OUTPUT_DIR, --output_dir OUTPUT_DIR
-      -a AXIS, --axis AXIS
-      -f, --filter          Do not save slices where # of non zero pixels < 4000
-      -r RESIZE, --resize RESIZE
-                            Resize image while saving
+    python anomaly_detection/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_0 -a 0
+    python anomaly_detection/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_1 -a 1
+    python anomaly_detection/utils/preprocessing/save_2D.py -i ./data/original/brain_train/ -o ./data/preprocessed/brain_train/2d_axis_2 -a 2
+   ...
    ```
-3. Create folds for cross-validation or use ours (`folds` dir)
+3. Optionally, create folds for cross-validation or **use ours folds** (`folds` dir)
     ```bash
-    python anomaly_detection/utils/data/create_folds.py [-h] -i INPUT_DIR -o OUTPUT_PATH [-n N_FOLDS]
-    
-    optional arguments:
-      -h, --help            show this help message and exit
-      -i INPUT_DIR, --input_dir INPUT_DIR
-      -o OUTPUT_PATH, --output_path OUTPUT_PATH
-      -n N_FOLDS, --n_folds N_FOLD
+    python anomaly_detection/utils/preprocessing/create_folds.py -i ./data/original/brain_train/ -o ./folds/brain/train_folds_10.csv -n 10
+    python anomaly_detection/utils/preprocessing/create_folds.py -i ./data/original/abdom_train/ -o ./folds/abdom/train_folds_10.csv -n 10
    ```
 4. Optionally: create a synthetic dataset for validation
     ```bash

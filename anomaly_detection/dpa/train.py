@@ -9,8 +9,8 @@ from anomaly_detection.dpa.pg_networks import ProgGrowStageType, NetworkType
 from anomaly_detection.dpa.pg_decoders import DECODER_NETWORKS
 from anomaly_detection.dpa.pg_encoders import ENCODER_NETWORKS
 from anomaly_detection.dpa.data_generators import ProgGrowImageGenerator, MixResolution
-from anomaly_detection.utils.data.datasets import DatasetType, DATASETS
-from anomaly_detection.utils.data.transforms import TRANSFORMS
+from anomaly_detection.utils.datasets import DatasetType, DATASETS
+from anomaly_detection.utils.transforms import TRANSFORMS
 from anomaly_detection.dpa.optimizer import Optimizer
 from anomaly_detection.dpa.rec_losses import ReconstructionLossType
 from anomaly_detection.dpa.pg_rec_losses import PG_RECONSTRUCTION_LOSSES

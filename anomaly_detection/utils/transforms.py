@@ -1,7 +1,7 @@
 from torchvision import transforms
 import monai.transforms
 
-from anomaly_detection.utils.data.datasets import DatasetType
+from anomaly_detection.utils.datasets import DatasetType
 
 
 class Transform2D:

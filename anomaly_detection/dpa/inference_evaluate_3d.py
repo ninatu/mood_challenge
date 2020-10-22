@@ -13,8 +13,8 @@ import monai
 
 from anomaly_detection.dpa.evaluate import save_sample_score
 from anomaly_detection.dpa.train import DeepPerceptualAutoencoder
-from anomaly_detection.utils.data.datasets import DatasetType, DATASETS
-from anomaly_detection.utils.data.transforms import TRANSFORMS
+from anomaly_detection.utils.datasets import DatasetType, DATASETS
+from anomaly_detection.utils.transforms import TRANSFORMS
 from anomaly_detection.dpa.rec_losses import ReconstructionLossType
 from anomaly_detection.dpa.pg_rec_losses import PG_RECONSTRUCTION_LOSSES
 

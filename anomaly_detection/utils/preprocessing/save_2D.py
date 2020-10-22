@@ -39,13 +39,22 @@ def nifti_to_2d_slices(input_folder: str, output_folder: str, axis: int, filtere
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input_dir", required=True, type=str)
-    parser.add_argument("-o", "--output_dir", required=True, type=str)
-    parser.add_argument("-a", "--axis", required=True, type=int)
-    parser.add_argument("-f", "--filter", action='store_true', default=False,
-                        help='Do not save slices where # of  non zero pixels < 4000')
-    parser.add_argument("-r", "--resize", required=False, type=int, default=None,
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-i", "--input_dir",
+                        default='./data/original/brain_train/',
+                        help='input_dir')
+    parser.add_argument("-o", "--output_dir",
+                        default='./data/preprocessed/brain_train/2d_axis_2',
+                        help='input_dir')
+    parser.add_argument("-a", "--axis", type=int,
+                        default=2,
+                        help='axis')
+    parser.add_argument("-f", "--do_not_filter", action='store_true',
+                        default=False,
+                        help='Default behavior: do not save slices where # of non zero pixels < 4000. \n'
+                             'Use this flag to disable this behavior')
+    parser.add_argument("-r", "--resize", type=int,
+                        default=256,
                         help='Resize image while saving')
 
     args = parser.parse_args()
@@ -53,8 +62,8 @@ if __name__ == "__main__":
     input_dir = args.input_dir
     output_dir = args.output_dir
     axis = args.axis
-    filtered = args.filter
+    do_filter = (args.do_not_filter == False)
     resize = args.resize
     os.makedirs(output_dir, exist_ok=True)
 
-    nifti_to_2d_slices(input_dir, output_dir, axis, filtered, resize)
+    nifti_to_2d_slices(input_dir, output_dir, axis, do_filter, resize)

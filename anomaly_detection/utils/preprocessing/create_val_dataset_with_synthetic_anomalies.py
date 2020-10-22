@@ -5,7 +5,6 @@ import argparse
 import nibabel as nib
 import pyellipsoid.drawing
 import pandas as pd
-import skimage.draw
 
 
 def get_center_and_radius(mask):
@@ -41,33 +40,6 @@ def gen_noise(color, size):
 
 def gen_alpha():
     return np.clip(np.random.exponential(scale=1 / 4), 0, 1)
-
-
-def draw_circle(image, mask, h, w, r):
-    x_h, x_w = gen_coord(h, r), gen_coord(w, r)
-    radius = gen_radius(r)
-
-    c = gen_color()
-    alpha = gen_alpha()
-
-    rr, cc = skimage.draw.circle(x_w, x_h, radius, image.shape)
-    image[rr, cc] = alpha * image[rr, cc] + (1 - alpha) * (c + gen_noise(c, len(rr)))
-    np.clip(image, 0, 1, out=image)
-    mask[rr, cc] = 1
-
-
-def draw_ellipse(image, mask, h, w, r):
-    x_h, x_w = gen_coord(h, r), gen_coord(w, r)
-    radius1 = gen_radius(r)
-    radius2 = gen_radius(r)
-
-    c = gen_color()
-    alpha = gen_alpha()
-    rr, cc = skimage.draw.ellipse(x_w, x_h, radius1, radius2, image.shape)
-    image[rr, cc] = alpha * image[rr, cc] + (1 - alpha) * (c + gen_noise(c, len(rr)))
-    np.clip(image, 0, 1, out=image)
-    mask[rr, cc] = 1
-
 
 
 def get_3d_center_and_radius(mask):
@@ -158,10 +130,16 @@ def create_anomaly_3d_dataset(input_folder, output_image_folder, output_mask_fol
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input_dir", required=True, type=str)
-    parser.add_argument("-o", "--output_image_dir", required=True, type=str)
-    parser.add_argument("-m", "--output_mask_dir", required=True, type=str)
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument("-i", "--input_dir",
+                        default='./data/original/brain_train/',
+                        help='input_dir')
+    parser.add_argument("-o", "--output_image_dir",
+                        default='./data/preprocessed/brain_train/3d_test',
+                        help='output_image_dir')
+    parser.add_argument("-m", "--output_mask_dir",
+                        default='./data/preprocessed/brain_train/3d_test_masks/',
+                        help='output_mask_dir')
     parser.add_argument("-p", "--folds_path", required=False, type=str, default=None,
                         help='Path to csv file with folds info. '
                              'Use if you want to create a synthetic dataset only from one "test" fold of input dataset')
