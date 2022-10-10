@@ -169,8 +169,25 @@ Inference using the docker:
 docker run --gpus all -v {input_dir}:/mnt/data -v {output_dir}:/mnt/pred mood:latest sh /workspace/run_{sample/pixel}_{TASK}.sh /mnt/data /mnt/pred
 ```
 
+## Cite
+If you use this code in your research, please cite:
+
+```bibtex
+@article{zimmerer2022mood,
+  title={MOOD 2020: A public Benchmark for Out-of-Distribution Detection and Localization on medical Images},
+  author={Zimmerer, David and Full, Peter M and Isensee, Fabian and J{\"a}ger, Paul and Adler, Tim and Petersen, Jens and K{\"o}hler, Gregor and Ross, Tobias and Reinke, Annika and Kascenas, Antanas and others},
+  journal={IEEE Transactions on Medical Imaging},
+  year={2022},
+  publisher={IEEE},
+  volume={41},
+  number={10},
+  pages={2728-2738},
+  doi={10.1109/TMI.2022.3170077}
+}
+```
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [license-shield]: https://img.shields.io/badge/License-Apache%202.0-blue.svg
 [license-url]: https://github.com/ninatu/mood_challenge/blob/master/LICENSE
+
